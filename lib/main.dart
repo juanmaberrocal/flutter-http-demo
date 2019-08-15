@@ -57,7 +57,11 @@ class MyApp extends StatelessWidget {
 
 Future<Post> fetchPost() async {
   final response =
-      await http.get('https://jsonplaceholder.typicode.com/posts/1');
+      await http.get(
+        'https://jsonplaceholder.typicode.com/posts/1',
+        // Send authorization headers to the backend.
+        headers: {'Authorization': "Basic your_api_token_here"},
+      );
 
   if (response.statusCode == 200) {
     // If server returns an OK response, parse the JSON.
