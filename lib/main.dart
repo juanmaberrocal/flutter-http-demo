@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
               return CircularProgressIndicator();
             },
           ), */
-          child: FutureBuilder<List<Photo>>(
+          /* child: FutureBuilder<List<Photo>>(
             future: fetchPhotos(http.Client()),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
@@ -60,6 +60,33 @@ class MyApp extends StatelessWidget {
                   ? PhotosList(photos: snapshot.data)
                   : Center(child: CircularProgressIndicator());
             },
+          ), */
+          child: Column(
+            children: [
+              FutureBuilder<Post>(
+                future: post,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data.title);
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+
+                  // By default, show a loading spinner.
+                  return CircularProgressIndicator();
+                },
+              ),
+              FutureBuilder<List<Photo>>(
+                future: fetchPhotos(http.Client()),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) print(snapshot.error);
+
+                  return snapshot.hasData
+                      ? Expanded(child: PhotosList(photos: snapshot.data))
+                      : Center(child: CircularProgressIndicator());
+                },
+              ),
+            ],
           )
         )
       ),
